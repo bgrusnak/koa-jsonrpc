@@ -17,7 +17,11 @@ class koaJsonRpc {
       throw new Error('Invalid options parameters!');
     }
     if (this.auth) {
-      this.token = crypto.createHmac('sha256', this.auth.password).update(this.auth.username).digest('hex');
+      if (typeof this.auth === "function") {
+        this.tokenFunction = this.auth
+      } else {
+        this.token = crypto.createHmac('sha256', this.auth.password).update(this.auth.username).digest('hex');
+      }
     }
   }
   use (name, func) {
@@ -26,6 +30,14 @@ class koaJsonRpc {
   app () {
     return async (ctx, next) => {
       let body, result;
+      if (this.tokenFunction) {
+        const headerFToken = ctx.get('authorization').split(' ').pop();
+        const token = this.tokenFunction(ctx)
+        if (headerFToken !== token) {
+          ctx.body = jsonResp(null, jsonError.Unauthorized());
+          return;
+        }        
+      }
       if (this.token) {
         const headerToken = ctx.get('authorization').split(' ').pop();
         if (headerToken !== this.token) {
