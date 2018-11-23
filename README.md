@@ -1,5 +1,6 @@
 # koa-jsonrpc
 Json-RPC 2 middleware implementation on Koa v2
+Difference is the passing of the ctx to calling functions
 
 ## Requirements
 - Koa@2+
@@ -43,7 +44,7 @@ jrpc2.use('user', async function user() {
   return 'root';
 });
 
-jrpc2.use('sum', async function sum(params) {
+jrpc2.use('sum', async function sum(params, ctx) {
   return params.reduce((prev, curr) => prev + curr,
         0);
 });
