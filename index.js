@@ -61,12 +61,15 @@ class koaJsonRpc {
         ctx.body = jsonResp(body.id, jsonError.MethodNotFound());
         return;
       }
+      console.log('test token')
+      console.log(body.accessToken)
       let aToken
         if (body.accessToken) aToken = body.accessToken
       try {
         
         result = await this.registry[body.method](body.params, ctx, aToken);
       } catch (e) {
+        console.log('error', e)
         if (e instanceof InvalidParamsError) {
           ctx.body = jsonResp(body.id, jsonError.InvalidParams(e.message));
           return;
