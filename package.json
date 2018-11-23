@@ -1,6 +1,6 @@
 {
   "name": "koa-jsonrpc",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Json RPC 2 middleware implementation on Koa v2",
   "main": "index.js",
   "scripts": {
