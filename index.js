@@ -62,7 +62,7 @@ class koaJsonRpc {
         return;
       }
       try {
-        result = await this.registry[body.method](body.params, ctx);
+        result = await this.registry[body.method](body.params, ctx, body.accessToken);
       } catch (e) {
         if (e instanceof InvalidParamsError) {
           ctx.body = jsonResp(body.id, jsonError.InvalidParams(e.message));
